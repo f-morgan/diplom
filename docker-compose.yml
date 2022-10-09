@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+
+  server:
+    image: backend
+    container_name: 'backend-server'
+    build: ./
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/filebase
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_LIQUIBASE_URL: jdbc:mysql://database:3306/filebase
+      SPRING_LIQUIBASE_USER: root
+      SPRING_LIQUIBASE_PASSWORD: root
+
+  database:
+    image: mysql
+    container_name: 'db-server'
+    volumes:
+      - /mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: filebase
+    ports:
+      - "3306:3306"
